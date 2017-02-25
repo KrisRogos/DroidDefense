@@ -3,30 +3,20 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "C_WorldTile.h"
-#include <array>
-#include "C_MapMngr.generated.h"
+#include "C_PlayerBase.generated.h"
 
 UCLASS()
-class DROIDDEFENSE_API AC_MapMngr : public AActor
+class DROIDDEFENSE_API AC_PlayerBase : public AActor
 {
-    GENERATED_BODY ()
-
-private:
-        TSubclassOf<class AC_WorldTile> mBP_Tile;
+	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AC_MapMngr ();
-
-    std::array< std::array< AC_WorldTile*, 18 >, 9> mpr_Tiles;
-
+	AC_PlayerBase();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-    void SpawnFloor ();
 
 public:	
 	// Called every frame

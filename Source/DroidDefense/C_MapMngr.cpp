@@ -15,8 +15,9 @@ AC_MapMngr::AC_MapMngr()
     static ConstructorHelpers::FObjectFinder<UBlueprint> bp_Tile (TEXT ("Blueprint'/Game/DroidDefense/BP_Tile.BP_Tile'"));
     if (bp_Tile.Object) mBP_Tile = (UClass*)bp_Tile.Object->GeneratedClass;
     
-    
-
+#if WITH_EDITOR
+    SpawnFloor ();
+#endif
 }
 
 // Called when the game starts or when spawned
@@ -24,6 +25,17 @@ void AC_MapMngr::BeginPlay()
 {
 	Super::BeginPlay();
 	
+#if WITH_EDITOR
+
+#else
+    SpawnFloor ();
+#endif
+    
+
+}
+
+void AC_MapMngr::SpawnFloor ()
+{
     UWorld* world = GetWorld ();
 
     if (world)
@@ -34,7 +46,7 @@ void AC_MapMngr::BeginPlay()
             for (uint8 column = 0; column < mpr_Tiles[row].size (); column++)
             {
                 // create the tile
-                FVector loc = FVector (row * 100, column * 100, 0);
+                FVector loc = FVector (row * 400, column * 400, 0);
                 FRotator rot = FRotator::ZeroRotator;
                 std::string nameSt = "[ " + std::to_string (row) + " | " + std::to_string (column) + " ]";
                 FName nameU (nameSt.c_str ());
@@ -53,7 +65,6 @@ void AC_MapMngr::BeginPlay()
             }
         }
     }
-
 }
 
 // Called every frame
