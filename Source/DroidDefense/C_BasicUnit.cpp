@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DroidDefense.h"
-#include "CBasicUnit.h"
+#include "C_BasicUnit.h"
 
 
 // Sets default values
-ACBasicUnit::ACBasicUnit()
+AC_BasicUnit::AC_BasicUnit ()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -13,21 +13,21 @@ ACBasicUnit::ACBasicUnit()
 }
 
 // Called when the game starts or when spawned
-void ACBasicUnit::BeginPlay()
+void AC_BasicUnit::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ACBasicUnit::Tick(float DeltaTime)
+void AC_BasicUnit::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
 // Called to bind functionality to input
-void ACBasicUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AC_BasicUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 

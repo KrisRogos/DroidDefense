@@ -3,16 +3,16 @@
 #pragma once
 
 #include "GameFramework/Character.h"
-#include "CBasicUnit.generated.h"
+#include "C_BasicUnit.generated.h"
 
 UCLASS()
-class DROIDDEFENSE_API ACBasicUnit : public ACharacter
+class DROIDDEFENSE_API AC_BasicUnit : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	ACBasicUnit();
+    AC_BasicUnit ();
 
 protected:
 	// Called when the game starts or when spawned

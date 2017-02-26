@@ -3,16 +3,26 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "C_BasicUnit.h"
 #include "C_EnemySpawn.generated.h"
+
+const float k_TimerMax = 5.0f;
 
 UCLASS()
 class DROIDDEFENSE_API AC_EnemySpawn : public AActor
 {
-	GENERATED_BODY()
-	
+    GENERATED_BODY ()
+
+        TSubclassOf<class AC_BasicUnit> mBP_DroidUnit;
+
 public:	
 	// Sets default values for this actor's properties
 	AC_EnemySpawn();
+
+    UPROPERTY (EditAnywhere, DisplayName = "timer", Category = "Enemy spawner")
+        float m_Timer;
+
+    
 
 protected:
 	// Called when the game starts or when spawned
