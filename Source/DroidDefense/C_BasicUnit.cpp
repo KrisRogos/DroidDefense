@@ -17,12 +17,22 @@ void AC_BasicUnit::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	m_TargetLoc = FVector (3200.0f, 6800.0f, 0.0f);
+
 }
 
 // Called every frame
 void AC_BasicUnit::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	FRotator targetRot = FRotationMatrix::MakeFromX (m_TargetLoc - GetActorLocation ()).Rotator ();
+
+	SetActorRotation (FMath::Lerp (GetActorRotation (), targetRot, 0.5*DeltaTime));
+
+	const FVector moveRot = FRotationMatrix (GetActorRotation ()).GetScaledAxis (EAxis::X);
+	AddMovementInput (moveRot, 10.0f * DeltaTime);
+	
 
 }
 

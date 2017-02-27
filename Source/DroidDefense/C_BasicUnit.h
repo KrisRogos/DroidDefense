@@ -18,6 +18,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+private:
+	// goal location
+	UPROPERTY(EditAnywhere, DisplayName = "Target Location", Category = "Unit data")
+	FVector m_TargetLoc;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
