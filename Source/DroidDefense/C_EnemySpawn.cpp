@@ -10,7 +10,7 @@ AC_EnemySpawn::AC_EnemySpawn()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-    static ConstructorHelpers::FObjectFinder<UBlueprint> bp_Droid (TEXT ("Blueprint'/Game/DroidDefense/BP_BasicMeleeUnit.BP_BasicMeleeUnit'"));
+    static ConstructorHelpers::FObjectFinder<UBlueprint> bp_Droid (TEXT ("Blueprint'/Game/DroidDefense/BP_DroidUnit.BP_DroidUnit'"));
     if (bp_Droid.Object) mBP_DroidUnit = (UClass*)bp_Droid.Object->GeneratedClass;
 
 }
@@ -39,7 +39,7 @@ void AC_EnemySpawn::Tick(float DeltaTime)
         FVector loc = FVector (0, 0, 0);
         FRotator rot = FRotator::ZeroRotator;
 
-        world->SpawnActor<AC_BasicUnit> (mBP_DroidUnit, loc, rot);
+        mpr_Units.emplace_back( world->SpawnActor<AC_BasicUnit> (mBP_DroidUnit, loc, rot) );
     }
 
 }

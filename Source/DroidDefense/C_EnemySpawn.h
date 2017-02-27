@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include <vector>
 #include "C_BasicUnit.h"
 #include "C_EnemySpawn.generated.h"
 
@@ -22,6 +23,7 @@ public:
     UPROPERTY (EditAnywhere, DisplayName = "timer", Category = "Enemy spawner")
         float m_Timer;
 
+    std::vector<AC_BasicUnit*> mpr_Units;
     
 
 protected:
