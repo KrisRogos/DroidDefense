@@ -21,18 +21,15 @@ void AC_BasicUnit::BeginPlay()
 
 }
 
+void AC_BasicUnit::Init (FVector a_TargetLoc)
+{
+	m_TargetLoc = a_TargetLoc;
+}
+
 // Called every frame
 void AC_BasicUnit::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	FRotator targetRot = FRotationMatrix::MakeFromX (m_TargetLoc - GetActorLocation ()).Rotator ();
-
-	SetActorRotation (FMath::Lerp (GetActorRotation (), targetRot, 0.5*DeltaTime));
-
-	const FVector moveRot = FRotationMatrix (GetActorRotation ()).GetScaledAxis (EAxis::X);
-	AddMovementInput (moveRot, 10.0f * DeltaTime);
-	
 
 }
 

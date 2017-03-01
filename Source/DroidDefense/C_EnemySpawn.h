@@ -7,7 +7,7 @@
 #include "C_BasicUnit.h"
 #include "C_EnemySpawn.generated.h"
 
-const float k_TimerMax = 5.0f;
+const float k_TimerMax = 0.35f;
 
 UCLASS()
 class DROIDDEFENSE_API AC_EnemySpawn : public AActor

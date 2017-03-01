@@ -12,7 +12,7 @@ AC_MapMngr::AC_MapMngr()
 	PrimaryActorTick.bCanEverTick = true;
 
     // get the blueprints
-    static ConstructorHelpers::FObjectFinder<UBlueprint> bp_Tile (TEXT ("Blueprint'/Game/DroidDefense/BP_Tile.BP_Tile'"));
+    static ConstructorHelpers::FObjectFinder<UBlueprint> bp_Tile (TEXT ("Blueprint'/Game/DroidDefense/Map/BP_Tile.BP_Tile'"));
     if (bp_Tile.Object) mBP_Tile = (UClass*)bp_Tile.Object->GeneratedClass;
     
 #if WITH_EDITOR

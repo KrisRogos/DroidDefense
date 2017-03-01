@@ -18,10 +18,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
+public:
 	// goal location
-	UPROPERTY(EditAnywhere, DisplayName = "Target Location", Category = "Unit data")
+	UPROPERTY(BlueprintReadWrite, DisplayName = "Target Location", Category = "Unit data")
 	FVector m_TargetLoc;
+
+	void Init (FVector a_TargetLoc);
 
 public:	
 	// Called every frame
