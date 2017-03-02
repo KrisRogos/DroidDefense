@@ -3,13 +3,14 @@
 #pragma once
 
 #include "GameFramework/GameModeBase.h"
+#include "GameFramework/GameMode.h"
 #include "DroidDefenseGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DROIDDEFENSE_API ADroidDefenseGameModeBase : public AGameModeBase
+class DROIDDEFENSE_API ADroidDefenseGameModeBase : public AGameMode
 {
 	GENERATED_BODY()
 	
