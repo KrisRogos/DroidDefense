@@ -14,6 +14,19 @@ public:
 	// Sets default values for this actor's properties
 	AC_BasicTower();
 
+	UPROPERTY (BlueprintReadWrite, DisplayName = "Detection Range", Category = "Tower data")
+		float m_Range;
+
+	UPROPERTY (BlueprintReadWrite, DisplayName = "Fire Rate", Category = "Tower data")
+		float m_FireTimerMax;
+
+		float m_FireTimer;
+
+	UPROPERTY (BlueprintReadWrite, DisplayName = "Damage", Category = "Tower data")	
+		float m_Damage;
+
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
