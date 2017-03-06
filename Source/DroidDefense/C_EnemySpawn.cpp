@@ -34,16 +34,25 @@ AC_EnemySpawn::AC_EnemySpawn()
 	nOrder2.delayBetween = 0.8f;
 	nOrder2.delayAfter = 10.0f;
 
+	FUnitSpawnOrder nOrder3;
+	nOrder3.type = EUnitTypes::BasicUnit;
+	nOrder3.amount = 5;
+	nOrder3.spawned = 0;
+	nOrder3.delayBetween = 1.5f;
+	nOrder3.delayAfter = 10.0f;
+
+
 	FWave nWave2;
 	nWave2.spawnIndicator = 0;
 	nWave2.timer = 0;
 	nWave2.spawnList.Add (nOrder2);
+	nWave2.spawnList.Add (nOrder3);
 
 	mr_Waves.Add (nWave2);
 
 }
 
-FString AC_EnemySpawn::GetWaveIndicator ()
+FText AC_EnemySpawn::GetWaveIndicator ()
 {
 	FString ret;
 	switch (m_State)
@@ -54,9 +63,7 @@ FString AC_EnemySpawn::GetWaveIndicator ()
 			mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].spawned + 1, mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].amount);
 		break;
 	case EGameState::Deployed:
-		ret = FString::Printf (TEXT ("%i of %i - order: %i of %i - unit: %i of %i"), m_CurrentWave, mr_Waves.Num (),
-			mr_Waves[m_CurrentWave-1].spawnIndicator + 1, mr_Waves[m_CurrentWave-1].spawnList.Num (),
-			mr_Waves[m_CurrentWave-1].spawnList[mr_Waves[m_CurrentWave-1].spawnIndicator].spawned + 1, mr_Waves[m_CurrentWave-1].spawnList[mr_Waves[m_CurrentWave-1].spawnIndicator].amount);
+		ret = FString::Printf (TEXT ("Final!!!"));
 		break;
 	case EGameState::Won:
 		ret = "Victory!!";
@@ -69,7 +76,7 @@ FString AC_EnemySpawn::GetWaveIndicator ()
 	}
 
 
-	return ret;
+	return FText::FromString(ret);
 }
 
 // Called when the game starts or when spawned
@@ -116,7 +123,8 @@ void AC_EnemySpawn::Tick(float DeltaTime)
 			}
 		}
 	}
-	else
+
+	if (m_CurrentWave >= mr_Waves.Num ())
 	{
 		m_State = EGameState::Deployed;
 	}

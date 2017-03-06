@@ -82,7 +82,7 @@ public:
 	int m_CurrentWave;
 
 	UFUNCTION (BlueprintCallable, DisplayName = "Wave Indicator", Category = "Enemy spawner")
-		FString GetWaveIndicator ();
+		FText GetWaveIndicator ();
 
 protected:
 	// Called when the game starts or when spawned
