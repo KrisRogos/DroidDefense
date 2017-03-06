@@ -45,9 +45,29 @@ AC_EnemySpawn::AC_EnemySpawn()
 
 FString AC_EnemySpawn::GetWaveIndicator ()
 {
-	FString ret = FString::Printf(TEXT("%i of %i - order: %i of %i - unit: %i of %i"), m_CurrentWave + 1, mr_Waves.Num (), 
-		mr_Waves[m_CurrentWave].spawnIndicator + 1, mr_Waves[m_CurrentWave].spawnList.Num(),
-		mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].spawned + 1, mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].amount);
+	FString ret;
+	switch (m_State)
+	{
+	case EGameState::Playing:
+		ret = FString::Printf (TEXT ("%i of %i - order: %i of %i - unit: %i of %i"), m_CurrentWave + 1, mr_Waves.Num (),
+			mr_Waves[m_CurrentWave].spawnIndicator + 1, mr_Waves[m_CurrentWave].spawnList.Num (),
+			mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].spawned + 1, mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].amount);
+		break;
+	case EGameState::Deployed:
+		ret = FString::Printf (TEXT ("%i of %i - order: %i of %i - unit: %i of %i"), m_CurrentWave, mr_Waves.Num (),
+			mr_Waves[m_CurrentWave-1].spawnIndicator + 1, mr_Waves[m_CurrentWave-1].spawnList.Num (),
+			mr_Waves[m_CurrentWave-1].spawnList[mr_Waves[m_CurrentWave-1].spawnIndicator].spawned + 1, mr_Waves[m_CurrentWave-1].spawnList[mr_Waves[m_CurrentWave-1].spawnIndicator].amount);
+		break;
+	case EGameState::Won:
+		ret = "Victory!!";
+		break;
+	case EGameState::Lost:
+		ret = "You lost!";
+		break;
+	default:
+		break;
+	}
+
 
 	return ret;
 }
@@ -96,26 +116,14 @@ void AC_EnemySpawn::Tick(float DeltaTime)
 			}
 		}
 	}
-
+	else
+	{
+		m_State = EGameState::Deployed;
+	}
 	
 
 
     m_Timer += DeltaTime;
-
-  //  if (m_Timer > k_TimerMax)
-  //  {
-  //      // reset timer
-  //      m_Timer = 0.0f;
-
-  //      UWorld* world = GetWorld ();
-
-  //      FVector loc = GetActorLocation();
-  //      FRotator rot = FRotator::ZeroRotator;
-
-  //      mpr_Units.emplace_back( world->SpawnActor<AC_BasicUnit> (mBP_DroidUnit, loc, rot) );
-		//mpr_Units.back()->Init (FVector (3200.0f, 7200.0f, 0.0f));
-
-  //  }
 
 }
 
