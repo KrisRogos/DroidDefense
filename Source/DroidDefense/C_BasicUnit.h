@@ -18,10 +18,19 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+
+
 public:
 	// goal location
 	UPROPERTY(BlueprintReadWrite, DisplayName = "Target Location", Category = "Unit data")
 	FVector m_TargetLoc;
+
+	// health
+	UPROPERTY (BlueprintReadWrite, DisplayName = "Health", Category = "Unit data")
+		float m_Health;
+
+	UPROPERTY (BlueprintReadWrite, DisplayName = "Parts left on death", Category = "Unit data")
+		int m_PartsDeath;
 
 	void Init (FVector a_TargetLoc);
 

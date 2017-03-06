@@ -14,6 +14,9 @@ public:
 	// Sets default values for this actor's properties
 	AC_BasicTower();
 
+	UPROPERTY (BlueprintReadWrite, DisplayName = "Part cost", Category = "Tower data")
+		int m_Cost;
+
 	UPROPERTY (BlueprintReadWrite, DisplayName = "Detection Range", Category = "Tower data")
 		float m_Range;
 
