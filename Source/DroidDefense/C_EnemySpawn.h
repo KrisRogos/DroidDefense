@@ -31,17 +31,17 @@ struct FUnitSpawnOrder
 {
     GENERATED_BODY ()
 
-    UPROPERTY (BlueprintReadOnly)
+    UPROPERTY (BlueprintReadWrite)
     EUnitTypes type;
-    UPROPERTY (BlueprintReadOnly)
+    UPROPERTY (BlueprintReadWrite)
     int amount;
-    UPROPERTY (BlueprintReadOnly)
+    UPROPERTY (BlueprintReadWrite)
     int spawned;
-    UPROPERTY (BlueprintReadOnly)
+    UPROPERTY (BlueprintReadWrite)
     float delayBetween;
-    UPROPERTY (BlueprintReadOnly)
+    UPROPERTY (BlueprintReadWrite)
     float delayAfter;
-    UPROPERTY (BlueprintReadOnly)
+    UPROPERTY (BlueprintReadWrite)
     float timer;
 };
 
@@ -50,11 +50,11 @@ struct FWave
 {
     GENERATED_BODY ()
 
-    UPROPERTY (BlueprintReadOnly)
+    UPROPERTY (BlueprintReadWrite)
     TArray<FUnitSpawnOrder> spawnList;
-    UPROPERTY (BlueprintReadOnly)
+    UPROPERTY (BlueprintReadWrite)
     int spawnIndicator;
-    UPROPERTY (BlueprintReadOnly)
+    UPROPERTY (BlueprintReadWrite)
     float timer;
 };
 
@@ -78,10 +78,17 @@ public:
 
     std::vector<AC_BasicUnit*> mpr_Units;
     
+    UPROPERTY (EditAnywhere, BlueprintReadWrite, DisplayName = "Waves", Category = "Enemy spawner")
     TArray<FWave> mr_Waves;
 
     UPROPERTY (EditAnywhere, DisplayName = "Wave counter", Category = "Enemy spawner")
     int m_CurrentWave;
+
+    UFUNCTION (BlueprintImplementableEvent, DisplayName = "Wave create", Category = "Enemy spawner")
+        void CreateWaves ();
+
+    UFUNCTION (BlueprintImplementableEvent, DisplayName = "Spawn unit", Category = "Enemy spawner")
+        AC_BasicUnit* SpawnUnit (EUnitTypes a_Type);
 
     UFUNCTION (BlueprintCallable, DisplayName = "Wave Indicator", Category = "Enemy spawner")
         FText GetWaveIndicator ();

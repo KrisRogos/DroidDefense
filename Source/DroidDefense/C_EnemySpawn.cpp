@@ -10,48 +10,11 @@ AC_EnemySpawn::AC_EnemySpawn()
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
 
-    static ConstructorHelpers::FObjectFinder<UBlueprint> bp_Droid (TEXT ("Blueprint'/Game/DroidDefense/Units/BP_DroidUnit.BP_DroidUnit'"));
-    if (bp_Droid.Object) mBP_DroidUnit = (UClass*)bp_Droid.Object->GeneratedClass;
+    //static ConstructorHelpers::FObjectFinder<UBlueprint> bp_Droid (TEXT ("Blueprint'/Game/DroidDefense/Units/BP_DroidUnit.BP_DroidUnit'"));
+    //if (bp_Droid.Object) mBP_DroidUnit = (UClass*)bp_Droid.Object->GeneratedClass;
 
-    static ConstructorHelpers::FObjectFinder<UBlueprint> bp_Heavy (TEXT ("Blueprint'/Game/DroidDefense/Units/BP_HeavyUnit.BP_HeavyUnit'"));
-    if (bp_Heavy.Object) mBP_HeavyUnit = (UClass*)bp_Heavy.Object->GeneratedClass;
-    
-    FUnitSpawnOrder nOrder1;
-    nOrder1.type = EUnitTypes::BasicUnit;
-    nOrder1.amount = 5;
-    nOrder1.spawned = 0;
-    nOrder1.delayBetween = 1.0f;
-    nOrder1.delayAfter = 10.0f;
-
-    FWave nWave1;
-    nWave1.spawnIndicator = 0;
-    nWave1.timer = 0;
-    nWave1.spawnList.Add (nOrder1);
-
-    mr_Waves.Add (nWave1);
-
-    FUnitSpawnOrder nOrder2;
-    nOrder2.type = EUnitTypes::BasicUnit;
-    nOrder2.amount = 10;
-    nOrder2.spawned = 0;
-    nOrder2.delayBetween = 0.8f;
-    nOrder2.delayAfter = 10.0f;
-
-    FUnitSpawnOrder nOrder3;
-    nOrder3.type = EUnitTypes::HeavyUnit;
-    nOrder3.amount = 5;
-    nOrder3.spawned = 0;
-    nOrder3.delayBetween = 1.5f;
-    nOrder3.delayAfter = 10.0f;
-
-
-    FWave nWave2;
-    nWave2.spawnIndicator = 0;
-    nWave2.timer = 0;
-    nWave2.spawnList.Add (nOrder2);
-    nWave2.spawnList.Add (nOrder3);
-
-    mr_Waves.Add (nWave2);
+    //static ConstructorHelpers::FObjectFinder<UBlueprint> bp_Heavy (TEXT ("Blueprint'/Game/DroidDefense/Units/BP_HeavyUnit.BP_HeavyUnit'"));
+    //if (bp_Heavy.Object) mBP_HeavyUnit = (UClass*)bp_Heavy.Object->GeneratedClass;
 
 }
 
@@ -87,6 +50,9 @@ void AC_EnemySpawn::BeginPlay()
 {
     Super::BeginPlay();
     
+    // Waves are created in a blueprint for easier edit
+    CreateWaves ();
+
     m_State = EGameState::Playing;
 
 }
@@ -96,7 +62,7 @@ void AC_EnemySpawn::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
     
-    if (m_CurrentWave < mr_Waves.Num())
+    if (m_CurrentWave < mr_Waves.Num() && mr_Waves[m_CurrentWave].spawnIndicator < mr_Waves[m_CurrentWave].spawnList.Num())
     {
         mr_Waves[m_CurrentWave].timer += DeltaTime;
         mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].timer += DeltaTime;
@@ -105,28 +71,9 @@ void AC_EnemySpawn::Tick(float DeltaTime)
         {
             mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].timer = 0;
 
-            UWorld* world = GetWorld ();
+            // spawn the unit itself (using a blueprint)
+            mpr_Units.emplace_back (SpawnUnit (mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].type));
 
-            FVector loc = GetActorLocation ();
-            FRotator rot = FRotator::ZeroRotator;
-            
-            // chose the unit to spawn
-            switch (mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].type)
-            {
-            case EUnitTypes::BasicUnit:
-                mpr_Units.emplace_back (world->SpawnActor<AC_BasicUnit> (mBP_DroidUnit, loc, rot));
-                break;
-            case EUnitTypes::HeavyUnit:
-                mpr_Units.emplace_back (world->SpawnActor<AC_BasicUnit> (mBP_HeavyUnit, loc, rot));
-                break;
-            case EUnitTypes::BasicTank:
-
-                break;
-            default:
-                break;
-            }
-
-            
             mpr_Units.back ()->Init (FVector (3200.0f, 7200.0f, 0.0f));
 
             mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].spawned++;
