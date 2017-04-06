@@ -3,7 +3,15 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "C_BasicTower.h"
 #include "C_WorldTile.generated.h"
+
+UENUM(BlueprintType)
+enum class EMapStatus : uint8
+{
+    EMPTY       UMETA (DisplayName = "Empty tile"),
+    TOWER       UMETA (DisplayName = "Has a tower")
+};
 
 UCLASS()
 class DROIDDEFENSE_API AC_WorldTile : public AActor
@@ -17,9 +25,14 @@ public:
     UPROPERTY (EditAnywhere, DisplayName = "X id", Category = "World Tile")
         uint8 X;
 
-    UPROPERTY (EditAnywhere, DisplayName = "XY id", Category = "World Tile")
+    UPROPERTY (EditAnywhere, DisplayName = "Y id", Category = "World Tile")
         uint8 Y;
 
+    UPROPERTY (EditAnywhere, BlueprintReadWrite, DisplayName = "Tile state", Category = "World Tile")
+        EMapStatus m_Status;
+
+    UPROPERTY (EditAnywhere, BlueprintReadWrite, DisplayName = "Tile content", Category = "World Tile")
+        AC_BasicTower* m_Tower;
 
 protected:
 	// Called when the game starts or when spawned

@@ -7,22 +7,22 @@
 // Sets default values
 AC_WorldTile::AC_WorldTile()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+    // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+    PrimaryActorTick.bCanEverTick = true;
 
 }
 
 // Called when the game starts or when spawned
 void AC_WorldTile::BeginPlay()
 {
-	Super::BeginPlay();
-	
+    Super::BeginPlay();
+    m_Status = EMapStatus::EMPTY;
 }
 
 // Called every frame
 void AC_WorldTile::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+    Super::Tick(DeltaTime);
 
 }
 
