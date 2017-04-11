@@ -31,6 +31,9 @@ public:
     UPROPERTY (BlueprintReadWrite, DisplayName = "Health", Category = "Unit data")
         float m_Health;
 
+    UPROPERTY (BlueprintReadWrite, DisplayName = "MaxHealth", Category = "Unit data")
+        float m_MaxHealth;
+
     UPROPERTY (BlueprintReadWrite, DisplayName = "Parts left on death", Category = "Unit data")
         int m_PartsDeath;
 
@@ -42,7 +45,5 @@ public:
 
     // Called to bind functionality to input
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-    
     
 };
