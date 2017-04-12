@@ -109,6 +109,9 @@ protected:
     UFUNCTION (BlueprintCallable, DisplayName = "Set tile", Category = "Map manager")
         bool SetTile (int a_X, int a_Y, AC_BasicTower* a_tower);
 
+    UFUNCTION (BlueprintCallable, DisplayName = "Reset tile", Category = "Map manager")
+        bool ResetTile (int a_X, int a_Y);
+
     TArray<FPathNode> & BuildPath (FStarNode* a_Target, TArray<FPathNode> & a_array);
     TArray<FPathNode> & GetFrom (FStarNode* a_Taget, TArray<FPathNode> & a_array);
 
@@ -116,6 +119,7 @@ protected:
     bool EvaluateNeighbor (int a_X, int a_Y, int a_Score, FStarNode* a_CameFrom, FStarNode* a_Goal, std::vector<FStarNode*> & apv_Open, std::vector<FStarNode*> & apv_Closed);
 
     int EvaluateHeuristic (FStarNode* a_Node, FStarNode* a_Goal);
+    int EvaluateCost (FStarNode* a_Node, int a_PreviousCost, bool & success);
 
     int Find (FStarNode* val, std::vector<FStarNode*> & apv_List);
 
@@ -123,7 +127,7 @@ protected:
 
 public:
     UFUNCTION (BlueprintCallable, DisplayName = "Path find", Category = "Map manager")
-        TArray<FPathNode> PathFind (int a_StartX, int a_StartY, int a_TargetX, int a_TargetY, TArray<FPathNode> a_array);
+        TArray<FPathNode> PathFind (int a_StartX, int a_StartY, int a_TargetX, int a_TargetY, UPARAM(ref) TArray<FPathNode> & a_array, bool & validPathCreated);
 
 public:	
     // Called every frame

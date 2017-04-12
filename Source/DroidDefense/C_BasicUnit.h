@@ -56,7 +56,7 @@ public:
 
    
 
-    void Init (FVector a_TargetLoc, int a_X, int a_Y);
+    void Init (FVector a_TargetLoc);
 
 public:	
     // Called every frame

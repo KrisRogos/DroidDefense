@@ -67,6 +67,8 @@ void AC_EnemySpawn::Tick(float DeltaTime)
         mr_Waves[m_CurrentWave].timer += DeltaTime;
         mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].timer += DeltaTime;
 
+        // deploy current wave
+        
         if (mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].timer > mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].delayBetween)
         {
             mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].timer = 0;
@@ -74,14 +76,17 @@ void AC_EnemySpawn::Tick(float DeltaTime)
             // spawn the unit itself (using a blueprint)
             mpr_Units.emplace_back (SpawnUnit (mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].type));
 
-            mpr_Units.back ()->Init (FVector (3200.0f, 7200.0f, 0.0f), 18, 8);
+            mpr_Units.back ()->Init (FVector (3200.0f, 7200.0f, 0.0f));
 
+            // indicate this unit was spawned
             mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].spawned++;
 
+            // move to the next order
             if (mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].spawned >= mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].amount)
             {
                 mr_Waves[m_CurrentWave].spawnIndicator++;
 
+                // move to the next wave
                 if (mr_Waves[m_CurrentWave].spawnIndicator >= mr_Waves[m_CurrentWave].spawnList.Num ())
                 {
                     m_CurrentWave++;

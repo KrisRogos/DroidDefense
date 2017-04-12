@@ -112,6 +112,18 @@ bool AC_MapMngr::SetTile (int a_X, int a_Y, AC_BasicTower * a_tower)
     return false;
 }
 
+bool AC_MapMngr::ResetTile (int a_X, int a_Y)
+{
+    // validate input
+    if (a_X < 0 || a_Y < 0 || a_X >= kCols || a_Y >= kRows)
+        return false;
+
+    // if empty, set to full and save a reference to the tower
+    mpr_Tiles[a_X][a_Y]->m_Status = EMapStatus::EMPTY;
+
+    return false;
+}
+
 TArray<FPathNode> & AC_MapMngr::BuildPath (FStarNode * a_Target, TArray<FPathNode> & a_array)
 {
     return (GetFrom(a_Target, a_array));
@@ -154,6 +166,17 @@ bool AC_MapMngr::EvaluateNeighbor (int a_X, int a_Y, int a_Score, FStarNode* a_C
     if (Find (p_Neighbor, apv_Closed) != -1)
         return false;
 
+    // evaluate cost properly
+    bool validPath = false;
+    p_Neighbor->score = EvaluateCost (p_Neighbor, a_Score, validPath);
+
+    // if this is a tile with a tower, throw it onto the closed list and quit this function
+    if (!validPath)
+    {
+        apv_Closed.emplace_back (p_Neighbor);
+        return false;
+    }
+
     // is this a completely new node? Insert it to the open list as is
     int inOpen = Find (p_Neighbor, apv_Open);
     if (inOpen == -1)
@@ -183,7 +206,21 @@ int AC_MapMngr::EvaluateHeuristic (FStarNode * a_Node, FStarNode * a_Goal)
     int ret = std::abs(a_Goal->X - a_Node->X);
     ret += std::abs (a_Goal->Y - a_Node->Y);
     
-    return ret*5;
+    return ret + 1;
+}
+
+int AC_MapMngr::EvaluateCost (FStarNode * a_Node, int a_PreviousCost, bool & success)
+{
+    // towers can't be passed through, they score a 1000
+    if (mpr_Tiles[a_Node->X][a_Node->Y]->m_Status == EMapStatus::TOWER)
+    {
+        success = false;
+        return a_PreviousCost + 1000;
+    }
+
+    // no tower, passing though this is cheap
+    success = true;
+    return a_PreviousCost + 1;
 }
 
 int AC_MapMngr::Find (FStarNode * val, std::vector<FStarNode*>& apv_List)
@@ -220,7 +257,7 @@ void AC_MapMngr::Sort (std::vector<FStarNode*>& apv_List)
     std::sort (apv_List.begin (), apv_List.end (), compare);
 }
 
-TArray<FPathNode> AC_MapMngr::PathFind (int a_StartX, int a_StartY, int a_TargetX, int a_TargetY, TArray<FPathNode> a_array)
+TArray<FPathNode> AC_MapMngr::PathFind (int a_StartX, int a_StartY, int a_TargetX, int a_TargetY, UPARAM (ref) TArray<FPathNode> & a_array, bool & validPathCreated)
 {
     // create lists
     std::vector<FStarNode*> pv_closedList;
@@ -244,6 +281,7 @@ TArray<FPathNode> AC_MapMngr::PathFind (int a_StartX, int a_StartY, int a_Target
         // check if this is the goal
         if (p_Current->X == p_GoalNode->X && p_Current->Y == p_GoalNode->Y)
         {
+            validPathCreated = true;
             return BuildPath (p_Current, a_array);
         }
 
@@ -251,17 +289,19 @@ TArray<FPathNode> AC_MapMngr::PathFind (int a_StartX, int a_StartY, int a_Target
         pv_closedList.emplace_back (p_Current);
 
         // evaluate all neighbors
-        if (p_Current->X < kRows) 
-            EvaluateNeighbor (p_Current->X + 1, p_Current->Y, p_Current->score + 2, p_Current, p_GoalNode, pv_openList, pv_closedList);
+        if (p_Current->X < kCols - 1 && p_Current->Y >= 0) 
+            EvaluateNeighbor (p_Current->X + 1, p_Current->Y, p_Current->score, p_Current, p_GoalNode, pv_openList, pv_closedList);
         if (p_Current->X > 0) 
-            EvaluateNeighbor (p_Current->X - 1, p_Current->Y, p_Current->score + 2, p_Current, p_GoalNode, pv_openList, pv_closedList);
-        if (p_Current->Y < kCols)
-            EvaluateNeighbor (p_Current->X, p_Current->Y + 1, p_Current->score + 2, p_Current, p_GoalNode, pv_openList, pv_closedList);
+            EvaluateNeighbor (p_Current->X - 1, p_Current->Y, p_Current->score, p_Current, p_GoalNode, pv_openList, pv_closedList);
+        if (p_Current->Y < kRows - 1 && p_Current->X >= 0)
+            EvaluateNeighbor (p_Current->X, p_Current->Y + 1, p_Current->score, p_Current, p_GoalNode, pv_openList, pv_closedList);
         if (p_Current->Y > 0)
-            EvaluateNeighbor (p_Current->X, p_Current->Y - 1, p_Current->score + 2, p_Current, p_GoalNode, pv_openList, pv_closedList);
+            EvaluateNeighbor (p_Current->X, p_Current->Y - 1, p_Current->score, p_Current, p_GoalNode, pv_openList, pv_closedList);
         
     }
 
+    // if things go wrong path find to starting position and report an error
+    validPathCreated = false;
     return BuildPath(p_StartNode, a_array);
 }
 
