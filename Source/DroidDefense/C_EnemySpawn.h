@@ -38,9 +38,7 @@ struct FUnitSpawnOrder
     UPROPERTY (BlueprintReadWrite)
     int spawned;
     UPROPERTY (BlueprintReadWrite)
-    float delayBetween;
-    UPROPERTY (BlueprintReadWrite)
-    float delayAfter;
+    float delay;
     UPROPERTY (BlueprintReadWrite)
     float timer;
 };
@@ -56,6 +54,10 @@ struct FWave
     int spawnIndicator;
     UPROPERTY (BlueprintReadWrite)
     float timer;
+    UPROPERTY (BlueprintReadWrite)
+    float delay;
+    UPROPERTY (BlueprintReadWrite)
+    bool deployed;
 };
 
 UCLASS()

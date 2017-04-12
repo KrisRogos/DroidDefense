@@ -68,29 +68,40 @@ void AC_EnemySpawn::Tick(float DeltaTime)
         mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].timer += DeltaTime;
 
         // deploy current wave
-        
-        if (mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].timer > mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].delayBetween)
+        if (!mr_Waves[m_CurrentWave].deployed)
         {
-            mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].timer = 0;
-
-            // spawn the unit itself (using a blueprint)
-            mpr_Units.emplace_back (SpawnUnit (mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].type));
-
-            mpr_Units.back ()->Init (FVector (3200.0f, 7200.0f, 0.0f));
-
-            // indicate this unit was spawned
-            mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].spawned++;
-
-            // move to the next order
-            if (mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].spawned >= mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].amount)
+            if (mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].timer > mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].delay)
             {
-                mr_Waves[m_CurrentWave].spawnIndicator++;
+                mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].timer = 0;
 
-                // move to the next wave
-                if (mr_Waves[m_CurrentWave].spawnIndicator >= mr_Waves[m_CurrentWave].spawnList.Num ())
+                // spawn the unit itself (using a blueprint)
+                mpr_Units.emplace_back (SpawnUnit (mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].type));
+
+                mpr_Units.back ()->Init (FVector (3200.0f, 7200.0f, 0.0f));
+
+                // indicate this unit was spawned
+                mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].spawned++;
+
+                // move to the next order
+                if (mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].spawned >= mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].amount)
                 {
-                    m_CurrentWave++;
+                    mr_Waves[m_CurrentWave].spawnIndicator++;
+
+                    // move to the next wave
+                    if (mr_Waves[m_CurrentWave].spawnIndicator >= mr_Waves[m_CurrentWave].spawnList.Num ())
+                    {
+                        mr_Waves[m_CurrentWave].spawnIndicator--;
+                        mr_Waves[m_CurrentWave].timer = 0.0f;
+                        mr_Waves[m_CurrentWave].deployed = true;
+                    }
                 }
+            }
+        }
+        else
+        {
+            if (mr_Waves[m_CurrentWave].timer >= mr_Waves[m_CurrentWave].delay)
+            {
+                m_CurrentWave++;
             }
         }
     }
