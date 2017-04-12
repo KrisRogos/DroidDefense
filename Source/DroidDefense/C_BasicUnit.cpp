@@ -17,7 +17,9 @@ void AC_BasicUnit::BeginPlay()
 {
     Super::BeginPlay();
     
-    m_TargetLoc = FVector (3200.0f, 6800.0f, 0.0f);
+    m_TargetLoc = FVector (3200.0f, 8000.0f, 0.0f);
+    m_TargetX = 17;
+    m_TargetY = 8;
 
 }
 
@@ -26,9 +28,11 @@ bool AC_BasicUnit::AStarTrace ()
     return false;
 }
 
-void AC_BasicUnit::Init (FVector a_TargetLoc)
+void AC_BasicUnit::Init (FVector a_TargetLoc, int a_X, int a_Y)
 {
     m_TargetLoc = a_TargetLoc;
+    m_TargetX = a_X;
+    m_TargetY = a_Y;
 }
 
 // Called every frame

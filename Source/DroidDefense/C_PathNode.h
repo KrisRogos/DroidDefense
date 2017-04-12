@@ -17,7 +17,7 @@ public:
     UPROPERTY (EditAnywhere, DisplayName = "X id", Category = "Path finding")
         uint8 X;
 
-    UPROPERTY (EditAnywhere, DisplayName = "XY id", Category = "Path finding")
+    UPROPERTY (EditAnywhere, DisplayName = "Y id", Category = "Path finding")
         uint8 Y;
 
 protected:

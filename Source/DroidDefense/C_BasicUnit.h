@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Character.h"
+#include "C_PathNode.h"
 #include "C_BasicUnit.generated.h"
 
 UCLASS()
@@ -27,6 +28,12 @@ public:
     UPROPERTY(BlueprintReadWrite, DisplayName = "Target Location", Category = "Unit data")
     FVector m_TargetLoc;
 
+    UPROPERTY (BlueprintReadWrite, DisplayName = "Target square X", Category = "Unit data")
+        int m_TargetX;
+
+    UPROPERTY (BlueprintReadWrite, DisplayName = "Target square Y", Category = "Unit data")
+        int m_TargetY;
+
     // health
     UPROPERTY (BlueprintReadWrite, DisplayName = "Health", Category = "Unit data")
         float m_Health;
@@ -37,7 +44,19 @@ public:
     UPROPERTY (BlueprintReadWrite, DisplayName = "Parts left on death", Category = "Unit data")
         int m_PartsDeath;
 
-    void Init (FVector a_TargetLoc);
+    // path finding
+    UPROPERTY (BlueprintReadWrite, DisplayName = "Path nodes", Category = "Unit data")
+        TArray<AC_PathNode*> mrp_PathNodes;
+
+    UPROPERTY (BlueprintReadWrite, DisplayName = "Current path node", Category = "Unit data")
+        int m_CurrentNode;
+
+    UFUNCTION (BlueprintImplementableEvent, DisplayName = "Find my path", Category = "Unit behavior")
+        void FindPath ();
+
+   
+
+    void Init (FVector a_TargetLoc, int a_X, int a_Y);
 
 public:	
     // Called every frame

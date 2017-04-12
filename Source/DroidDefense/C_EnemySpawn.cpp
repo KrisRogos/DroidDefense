@@ -74,7 +74,7 @@ void AC_EnemySpawn::Tick(float DeltaTime)
             // spawn the unit itself (using a blueprint)
             mpr_Units.emplace_back (SpawnUnit (mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].type));
 
-            mpr_Units.back ()->Init (FVector (3200.0f, 7200.0f, 0.0f));
+            mpr_Units.back ()->Init (FVector (3200.0f, 7200.0f, 0.0f), 18, 8);
 
             mr_Waves[m_CurrentWave].spawnList[mr_Waves[m_CurrentWave].spawnIndicator].spawned++;
 
