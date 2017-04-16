@@ -83,7 +83,7 @@ public:
     UPROPERTY (EditAnywhere, BlueprintReadWrite, DisplayName = "Waves", Category = "Enemy spawner")
     TArray<FWave> mr_Waves;
 
-    UPROPERTY (EditAnywhere, DisplayName = "Wave counter", Category = "Enemy spawner")
+    UPROPERTY (EditAnywhere, BlueprintReadOnly, DisplayName = "Wave counter", Category = "Enemy spawner")
     int m_CurrentWave;
 
     UFUNCTION (BlueprintImplementableEvent, DisplayName = "Wave create", Category = "Enemy spawner")
