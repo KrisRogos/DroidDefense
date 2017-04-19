@@ -25,7 +25,7 @@ protected:
 
 public:
     // goal location
-    UPROPERTY(BlueprintReadWrite, DisplayName = "Target Location", Category = "Unit data")
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere, DisplayName = "Target Location", Category = "Unit data")
     FVector m_TargetLoc;
 
     UPROPERTY (BlueprintReadWrite, DisplayName = "Target square X", Category = "Unit data")

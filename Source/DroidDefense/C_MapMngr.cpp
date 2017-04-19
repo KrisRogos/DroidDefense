@@ -259,6 +259,13 @@ void AC_MapMngr::Sort (std::vector<FStarNode*>& apv_List)
 
 TArray<FPathNode> AC_MapMngr::PathFind (int a_StartX, int a_StartY, int a_TargetX, int a_TargetY, UPARAM (ref) TArray<FPathNode> & a_array, bool & validPathCreated)
 {
+    // make sure not already past the goal
+    if (a_StartX >= kCols || a_StartY >= kRows)
+    {
+        validPathCreated = true; // since no path is needed, no path is a valid path
+        return a_array;
+    }
+
     // create lists
     std::vector<FStarNode*> pv_closedList;
     std::vector<FStarNode*> pv_openList;
@@ -291,11 +298,11 @@ TArray<FPathNode> AC_MapMngr::PathFind (int a_StartX, int a_StartY, int a_Target
         // evaluate all neighbors
         if (p_Current->X < kCols - 1 && p_Current->Y >= 0) 
             EvaluateNeighbor (p_Current->X + 1, p_Current->Y, p_Current->score, p_Current, p_GoalNode, pv_openList, pv_closedList);
-        if (p_Current->X > 0) 
+        if (p_Current->X > 0 && p_Current->Y < kRows) 
             EvaluateNeighbor (p_Current->X - 1, p_Current->Y, p_Current->score, p_Current, p_GoalNode, pv_openList, pv_closedList);
         if (p_Current->Y < kRows - 1 && p_Current->X >= 0)
             EvaluateNeighbor (p_Current->X, p_Current->Y + 1, p_Current->score, p_Current, p_GoalNode, pv_openList, pv_closedList);
-        if (p_Current->Y > 0)
+        if (p_Current->Y > 0 && p_Current->X < kCols)
             EvaluateNeighbor (p_Current->X, p_Current->Y - 1, p_Current->score, p_Current, p_GoalNode, pv_openList, pv_closedList);
         
     }
