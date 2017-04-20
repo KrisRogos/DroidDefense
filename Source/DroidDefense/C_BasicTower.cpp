@@ -10,9 +10,6 @@ AC_BasicTower::AC_BasicTower()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	static ConstructorHelpers::FObjectFinder<UBlueprint> bp_Bullet (TEXT ("Blueprint'/Game/DroidDefense/Ammo/BP_Bullet.BP_Bullet'"));
-	if (bp_Bullet.Object) mBP_Bullet = (UClass*)bp_Bullet.Object->GeneratedClass;
-
 }
 
 // Called when the game starts or when spawned

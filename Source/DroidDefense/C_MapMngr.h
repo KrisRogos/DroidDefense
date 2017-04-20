@@ -82,9 +82,6 @@ class DROIDDEFENSE_API AC_MapMngr : public AActor
 {
     GENERATED_BODY ()
 
-private:
-        TSubclassOf<class AC_WorldTile> mBP_Tile;
-    
 public:
 
     const static int kRows = 18;
@@ -128,6 +125,9 @@ protected:
 public:
     UFUNCTION (BlueprintCallable, DisplayName = "Path find", Category = "Map manager")
         TArray<FPathNode> PathFind (int a_StartX, int a_StartY, int a_TargetX, int a_TargetY, UPARAM(ref) TArray<FPathNode> & a_array, bool & validPathCreated);
+
+    UFUNCTION (BlueprintImplementableEvent, DisplayName = "Spawn single tile", Category = "Map manager")
+        AC_WorldTile* SpawnSingleTile (FVector a_loc);
 
 public:	
     // Called every frame

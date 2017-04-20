@@ -31,7 +31,6 @@ public:
 	UPROPERTY (BlueprintReadWrite, DisplayName = "Damage", Category = "Tower data")	
 		float m_Damage;
 
-	TSubclassOf<class AActor> mBP_Bullet;
 
 protected:
 	// Called when the game starts or when spawned

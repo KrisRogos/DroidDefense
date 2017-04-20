@@ -12,13 +12,6 @@ AC_MapMngr::AC_MapMngr()
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
 
-    // get the blueprints
-    static ConstructorHelpers::FObjectFinder<UBlueprint> bp_Tile (TEXT ("Blueprint'/Game/DroidDefense/Map/BP_Tile.BP_Tile'"));
-    if (bp_Tile.Object) mBP_Tile = (UClass*)bp_Tile.Object->GeneratedClass;
-    
-//#if WITH_EDITOR
-   // SpawnFloor ();
-//#endif
 }
 
 // Called when the game starts or when spawned
@@ -26,11 +19,7 @@ void AC_MapMngr::BeginPlay()
 {
     Super::BeginPlay();
     
-//#if WITH_EDITOR
-
-//#else
     SpawnFloor ();
-//#endif
     
 
 }
@@ -62,17 +51,11 @@ void AC_MapMngr::SpawnFloor ()
             {
                 // create the tile
                 FVector loc = FVector (row * 400, column * 400, 0);
-                FRotator rot = FRotator::ZeroRotator;
-                std::string nameSt = "[ " + std::to_string (row) + " | " + std::to_string (column) + " ]";
-                FName nameU (nameSt.c_str ());
-                FActorSpawnParameters asp;
-                asp.Name = nameU; //("[ " + std::to_string (row) + " | " + std::to_string (column) + " ]");
-                asp.Owner = this;
-                mpr_Tiles[row][column] = world->SpawnActor<AC_WorldTile> (mBP_Tile, loc, rot, asp);
+
+                mpr_Tiles[row][column] = SpawnSingleTile(loc);
 #if WITH_EDITOR
                 mpr_Tiles[row][column]->SetFolderPath ("WorldTiles");
 #endif
-
 
                 // set up the location
                 mpr_Tiles[row][column]->X = column;
